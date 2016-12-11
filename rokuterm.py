@@ -1,31 +1,47 @@
 #networkCall("POST", "http://" + ip + ":8060/keypress/" + id);
 import requests
+import urllib2
+import sys
 
-ip = "192.168.0.8"
+
+ip = ""
 
 def send(url):
-	#url = 'http://192.168.0.8:8060/keypress/Right'
 	payload = {'': ''}
+	try:
+		# POST with form-encoded data
+		r = requests.post(url, data=payload)
+		
+		# Response, status etc
+		#r.text
+		#r.status_code
+	except:
+		print "ROKU NOT FOUND!"
 
-	# GET
-	#r = requests.get(url)
+def find():
+	global ip
+	for i in range(1,256):
+		try:
+			url = 'http://192.168.0.' + str(i) + ':8060'	
+			r = urllib2.urlopen(url)
+			html=r.read()
+			if "Roku" in html:
+				print "Roku found!"
+				print "192.168.0." + str(i)
+				ip = "192.168.0." + str(i)
+				break
+		except:
+			ip = ""
 
-	# GET with params in URL
-	#r = requests.get(url, params=payload)
 
-	# POST with form-encoded data
-	r = requests.post(url, data=payload)
-	
-	# POST with JSON 
-	#import json
-	#r = requests.post(url, data=json.dumps(payload))
+if len(sys.argv) > 1:
+	ip = sys.argv[1]
+else:
+	find()
 
-	# Response, status etc
-	#r.text
-	#r.status_code
-
-	#print r.status_code
-
+if ip == "":
+	print "ROKU NOT FOUND!"
+	quit()
 while True:
 	print "1. Play"
 	print "2. Down"
