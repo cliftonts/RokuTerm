@@ -1,10 +1,23 @@
-#networkCall("POST", "http://" + ip + ":8060/keypress/" + id);
+#!/usr/bin/env python
+
+#************************************************************
+#*                                                          *
+#*          RokuTerm - Terminal based Roku control          *
+#*                                                          *
+#*                 Authored by Gareth France                *
+#*                                                          *
+#************************************************************
+
 import requests
 import urllib2
+import urllib
 import sys
+import time
+import neighbourhood
 
 
 ip = ""
+version = "0.0.3"
 
 def send(url):
 	payload = {'': ''}
@@ -34,6 +47,28 @@ def find():
 			ip = ""
 
 
+def keyboard(ip):
+	#urllib.quote('/test', safe='')
+
+	#networkCall("POST", "http://" + ip + ":8060/keypress/Backspace");
+	keyin = raw_input("Search: ")
+	for i in keyin:
+		url = "http://" + ip + ":8060/keypress/Lit_" + urllib.quote(i, safe='');
+		payload = {'': ''}
+		try:
+			# POST with form-encoded data
+			r = requests.post(url, data=payload)
+			
+			# Response, status etc
+			#r.text
+			#r.status_code
+		except:
+			print "ROKU NOT FOUND!"
+		time.sleep(0.1)
+
+#Main
+#neighbourhood.main()
+#quit()
 if len(sys.argv) > 1:
 	ip = sys.argv[1]
 else:
@@ -52,6 +87,7 @@ while True:
 	print "7. Home"
 	print "8. Up"
 	print "9. Back"
+	print "S. Search"
 
         #"InstantReplay": "InstantReplay",
         #"Info":"Info",
@@ -93,11 +129,10 @@ while True:
 		send(cmd)
 	elif key == '3':
 		quit()
+	elif key == 's' or key == 'S':
+		keyboard(ip)
 	else:
 		print "INVALID ENTRY! TRY AGAIN"
-
-	print cmd
-
 
 
 
