@@ -13,12 +13,34 @@ import urllib2
 import urllib
 import sys
 import time
-import neighbourhood
+#import neighbourhood
 
 
 ip = ""
 version = "0.0.3"
 
+def help():
+	print "************************************************************"
+	print "*                                                          *"
+	print "*          RokuTerm - Terminal based Roku control          *"
+	print "*                                                          *"
+	print "*                 Authored by Gareth France                *"
+	print "*                           " + version + "                          *"
+	print "*                                                          *"
+	print "************************************************************"
+	print
+	print "Usage:"
+	print "Load rokuterm, autoscanning for devices."
+	print "rokuterm"
+	print
+	print "Load rokuterm using a specific IP address"
+	print "rokuterm --ip=<ip address>"
+	print "e.g.: rokuterm --ip=192.168.0.5"
+	print
+	print "Using the autoscan option is currently very slow and only detects one roku. Additional devices will be ignored."
+	print "RokuTerm is loosely based upon uRoku for Ubuntu Touch"
+	print "https://github.com/ShaneQful/uRoku"
+	
 def send(url):
 	payload = {'': ''}
 	try:
