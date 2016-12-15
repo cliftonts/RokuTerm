@@ -13,11 +13,12 @@ import urllib2
 import urllib
 import sys
 import time
+import os
 #import neighbourhood
 
 
 ip = ""
-version = "0.0.3"
+version = "0.0.4"
 
 def help():
 	print "************************************************************"
@@ -35,11 +36,13 @@ def help():
 	print
 	print "Load rokuterm using a specific IP address"
 	print "rokuterm --ip=<ip address>"
-	print "e.g.: rokuterm --ip=192.168.0.5"
+	print "e.g.: rokuterm 192.168.0.5"
 	print
 	print "Using the autoscan option is currently very slow and only detects one roku. Additional devices will be ignored."
+	print "Only the IP range 192.168.0.xxx is currently scanned. A more versatile scan is currently being developed.
 	print "RokuTerm is loosely based upon uRoku for Ubuntu Touch"
 	print "https://github.com/ShaneQful/uRoku"
+	quit()
 	
 def send(url):
 	payload = {'': ''}
@@ -57,7 +60,8 @@ def find():
 	global ip
 	for i in range(1,256):
 		try:
-			url = 'http://192.168.0.' + str(i) + ':8060'	
+			url = 'http://192.168.0.' + str(i) + ':8060'
+			print "Attempting - 192.168.0." + str(i)	
 			r = urllib2.urlopen(url)
 			html=r.read()
 			if "Roku" in html:
@@ -92,45 +96,40 @@ def keyboard(ip):
 #neighbourhood.main()
 #quit()
 if len(sys.argv) > 1:
-	ip = sys.argv[1]
+	if "--h" in sys.argv or "--help" in sys.argv:
+		help()
+	else:
+		ip = sys.argv[1]
+
 else:
 	find()
 
 if ip == "":
 	print "ROKU NOT FOUND!"
 	quit()
-#******** ********** *********** **********
-#*  7   * *   8    * *    9    * *   /    *
-#* Back * *   UP   * *  Home   * *  Play  *
-#******** ********** *********** **********
 
-#******** ********** *********** **********
-#*  4   * *   5    * *    6    * *   *    *
-#* Left * * Select * *  Right  * * Reload *
-#******** ********** *********** **********
-
-#******** ********** *********** **********
-#*      * *   2    * *    3    * *   -    *
-#*Back  * * Down   * * Forward * *  Quit  *
-#******** ********** *********** **********
-
-#         **********
-#         *   S    *
-#         * Search *
-#         **********
+os.system('cls' if os.name == 'nt' else 'clear')
+print " ******** ********** *********** **********"
+print " *  7   * *   8    * *    9    * *   /    *"
+print " * Back * *   UP   * *  Home   * *  Play  *"
+print " ******** ********** *********** **********"
+print ""
+print " ******** ********** *********** **********"
+print " *  4   * *   5    * *    6    * *   *    *"
+print " * Left * * Select * *  Right  * * Reload *"
+print " ******** ********** *********** **********"
+print ""
+print " ******** ********** *********** **********"
+print " *  1   * *   2    * *    3    * *   -    *"
+print " * Rev  * *  Down  * * Forward * *  Quit  *"
+print " ******** ********** *********** **********"
+print ""
+print "          **********"
+print "          *   S    *"
+print "          * Search *"
+print "          **********"
 
 while True:
-	print "1. Play"
-	print "2. Down"
-	print "3. Quit"
-	print "4. Left"
-	print "5. Select"
-	print "6. Right"
-	print "7. Home"
-	print "8. Up"
-	print "9. Back"
-	print "S. Search"
-
         #"InstantReplay": "InstantReplay",
         #"Info":"Info",
         #"Rev":"Rev",
@@ -145,10 +144,19 @@ while True:
         #"Save": "Save"
 	key = raw_input("Choose:")
 
-	if key == '7':
+	if key == '9':
 		cmd = "http://" + ip + ":8060/keypress/Home"
 		send(cmd)
-	elif key == '9':
+	elif key == '1':
+		cmd = "http://" + ip + ":8060/keypress/Rev"
+		send(cmd)
+	elif key == '3':
+		cmd = "http://" + ip + ":8060/keypress/Fwd"
+		send(cmd)
+	elif key == '*':
+		cmd = "http://" + ip + ":8060/keypress/InstantReplay"
+		send(cmd)
+	elif key == '7':
 		cmd = "http://" + ip + ":8060/keypress/Back"
 		send(cmd)
 	elif key == '4':
@@ -166,10 +174,10 @@ while True:
 	elif key == '5':
 		cmd = "http://" + ip + ":8060/keypress/Select"
 		send(cmd)
-	elif key == '1':
+	elif key == '/':
 		cmd = "http://" + ip + ":8060/keypress/Play"
 		send(cmd)
-	elif key == '3':
+	elif key == '-':
 		quit()
 	elif key == 's' or key == 'S':
 		keyboard(ip)
