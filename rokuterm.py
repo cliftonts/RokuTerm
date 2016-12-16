@@ -18,7 +18,7 @@ import os
 
 
 ip = ""
-version = "0.0.4"
+version = "0.0.5"
 
 def help():
 	print "************************************************************"
@@ -39,7 +39,7 @@ def help():
 	print "e.g.: rokuterm 192.168.0.5"
 	print
 	print "Using the autoscan option is currently very slow and only detects one roku. Additional devices will be ignored."
-	print "Only the IP range 192.168.0.xxx is currently scanned. A more versatile scan is currently being developed.
+	print "Only the IP range 192.168.0.xxx is currently scanned. A more versatile scan is currently being developed."
 	print "RokuTerm is loosely based upon uRoku for Ubuntu Touch"
 	print "https://github.com/ShaneQful/uRoku"
 	quit()
@@ -108,28 +108,28 @@ if ip == "":
 	print "ROKU NOT FOUND!"
 	quit()
 
-os.system('cls' if os.name == 'nt' else 'clear')
-print " ******** ********** *********** **********"
-print " *  7   * *   8    * *    9    * *   /    *"
-print " * Back * *   UP   * *  Home   * *  Play  *"
-print " ******** ********** *********** **********"
-print ""
-print " ******** ********** *********** **********"
-print " *  4   * *   5    * *    6    * *   *    *"
-print " * Left * * Select * *  Right  * * Reload *"
-print " ******** ********** *********** **********"
-print ""
-print " ******** ********** *********** **********"
-print " *  1   * *   2    * *    3    * *   -    *"
-print " * Rev  * *  Down  * * Forward * *  Quit  *"
-print " ******** ********** *********** **********"
-print ""
-print "          **********"
-print "          *   S    *"
-print "          * Search *"
-print "          **********"
-
 while True:
+	os.system('cls' if os.name == 'nt' else 'clear')
+	print " ******** ********** *********** **********"
+	print " *  7   * *   8    * *    9    * *   /    *"
+	print " * Back * *   UP   * *  Home   * *  Play  *"
+	print " ******** ********** *********** **********"
+	print ""
+	print " ******** ********** *********** **********"
+	print " *  4   * *   5    * *    6    * *   *    *"
+	print " * Left * * Select * *  Right  * * Reload *"
+	print " ******** ********** *********** **********"
+	print ""
+	print " ******** ********** *********** **********"
+	print " *  1   * *   2    * *    3    * *   -    *"
+	print " * Rev  * *  Down  * * Forward * *  Quit  *"
+	print " ******** ********** *********** **********"
+	print ""
+	print "          **********"
+	print "          *   S    *"
+	print "          * Search *"
+	print "          **********"
+
         #"InstantReplay": "InstantReplay",
         #"Info":"Info",
         #"Rev":"Rev",
