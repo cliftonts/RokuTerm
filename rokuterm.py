@@ -9,39 +9,42 @@
 #************************************************************
 
 import requests
-import urllib2
 import urllib
 import sys
 import time
 import os
+if sys.version_info >= (3,0):
+	import urllib.request
+else:
+	import urllib2
 #import neighbourhood
 
 
 ip = ""
-version = "0.0.5"
+version = "0.1.0"
 
 def help():
-	print "************************************************************"
-	print "*                                                          *"
-	print "*          RokuTerm - Terminal based Roku control          *"
-	print "*                                                          *"
-	print "*                 Authored by Gareth France                *"
-	print "*                           " + version + "                          *"
-	print "*                                                          *"
-	print "************************************************************"
+	print ("************************************************************")
+	print ("*                                                          *")
+	print ("*          RokuTerm - Terminal based Roku control          *")
+	print ("*                                                          *")
+	print ("*                 Authored by Gareth France                *")
+	print ("*                           " + version + "                          *")
+	print ("*                                                          *")
+	print ("************************************************************")
 	print
-	print "Usage:"
-	print "Load rokuterm, autoscanning for devices."
-	print "rokuterm"
+	print ("Usage:")
+	print ("Load rokuterm, autoscanning for devices.")
+	print ("rokuterm")
 	print
-	print "Load rokuterm using a specific IP address"
-	print "rokuterm --ip=<ip address>"
-	print "e.g.: rokuterm 192.168.0.5"
+	print ("Load rokuterm using a specific IP address")
+	print ("rokuterm --ip=<ip address>")
+	print ("e.g.: rokuterm 192.168.0.5")
 	print
-	print "Using the autoscan option is currently very slow and only detects one roku. Additional devices will be ignored."
-	print "Only the IP range 192.168.0.xxx is currently scanned. A more versatile scan is currently being developed."
-	print "RokuTerm is loosely based upon uRoku for Ubuntu Touch"
-	print "https://github.com/ShaneQful/uRoku"
+	print ("Using the autoscan option is currently very slow and only detects one roku. Additional devices will be ignored.")
+	print ("Only the IP range 192.168.0.xxx is currently scanned. A more versatile scan is currently being developed.")
+	print ("RokuTerm is loosely based upon uRoku for Ubuntu Touch")
+	print ("https://github.com/ShaneQful/uRoku")
 	quit()
 	
 def send(url):
@@ -54,19 +57,19 @@ def send(url):
 		#r.text
 		#r.status_code
 	except:
-		print "ROKU NOT FOUND!"
+		print ("ROKU NOT FOUND!")
 
 def find():
 	global ip
 	for i in range(1,256):
 		try:
 			url = 'http://192.168.0.' + str(i) + ':8060'
-			print "Attempting - 192.168.0." + str(i)	
+			print ("Attempting - 192.168.0." + str(i))	
 			r = urllib2.urlopen(url)
 			html=r.read()
 			if "Roku" in html:
-				print "Roku found!"
-				print "192.168.0." + str(i)
+				print ("Roku found!")
+				print ("192.168.0." + str(i))
 				ip = "192.168.0." + str(i)
 				break
 		except:
@@ -89,8 +92,8 @@ def keyboard(ip):
 			#r.text
 			#r.status_code
 		except:
-			print "ROKU NOT FOUND!"
-		time.sleep(0.1)
+			print ("ROKU NOT FOUND!")
+		time.sleep(0.2)
 
 #Main
 #neighbourhood.main()
@@ -105,30 +108,30 @@ else:
 	find()
 
 if ip == "":
-	print "ROKU NOT FOUND!"
+	print ("ROKU NOT FOUND!")
 	quit()
 
 while True:
 	os.system('cls' if os.name == 'nt' else 'clear')
-	print " ******** ********** *********** **********"
-	print " *  7   * *   8    * *    9    * *   /    *"
-	print " * Back * *   UP   * *  Home   * *  Play  *"
-	print " ******** ********** *********** **********"
-	print ""
-	print " ******** ********** *********** **********"
-	print " *  4   * *   5    * *    6    * *   *    *"
-	print " * Left * * Select * *  Right  * * Reload *"
-	print " ******** ********** *********** **********"
-	print ""
-	print " ******** ********** *********** **********"
-	print " *  1   * *   2    * *    3    * *   -    *"
-	print " * Rev  * *  Down  * * Forward * *  Quit  *"
-	print " ******** ********** *********** **********"
-	print ""
-	print "          **********"
-	print "          *   S    *"
-	print "          * Search *"
-	print "          **********"
+	print (" ******** ********** *********** **********")
+	print (" *  7   * *   8    * *    9    * *   /    *")
+	print (" * Back * *   UP   * *  Home   * *  Play  *")
+	print (" ******** ********** *********** **********")
+	print ("")
+	print (" ******** ********** *********** **********")
+	print (" *  4   * *   5    * *    6    * *   *    *")
+	print (" * Left * * Select * *  Right  * * Reload *")
+	print (" ******** ********** *********** **********")
+	print ("")
+	print (" ******** ********** *********** **********")
+	print (" *  1   * *   2    * *    3    * *   -    *")
+	print (" * Rev  * *  Down  * * Forward * *  Quit  *")
+	print (" ******** ********** *********** **********")
+	print ("")
+	print (" ******** **********")
+	print (" *  0   * *   S    *")
+	print (" * Info * * Search *")
+	print (" ******** **********")
 
         #"InstantReplay": "InstantReplay",
         #"Info":"Info",
@@ -142,7 +145,10 @@ while True:
         #"NotFound":"No Roku Found",
         #"EnterIP":"Enter the ip of your roku here ..",
         #"Save": "Save"
-	key = raw_input("Choose:")
+	if sys.version_info >= (3,0):
+		key = input("Choose:")
+	else:
+		key = raw_input("Choose:")
 
 	if key == '9':
 		cmd = "http://" + ip + ":8060/keypress/Home"
@@ -177,12 +183,15 @@ while True:
 	elif key == '/':
 		cmd = "http://" + ip + ":8060/keypress/Play"
 		send(cmd)
+	elif key == '0':
+		cmd = "http://" + ip + ":8060/keypress/Info"
+		send(cmd)
 	elif key == '-':
 		quit()
 	elif key == 's' or key == 'S':
 		keyboard(ip)
 	else:
-		print "INVALID ENTRY! TRY AGAIN"
+		print ("INVALID ENTRY! TRY AGAIN")
 
 
 
