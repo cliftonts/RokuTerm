@@ -22,7 +22,7 @@ else:
 
 
 ip = ""
-version = "0.1.2"
+version = "0.1.4"
 
 #KB hit routines START
 # save the terminal settings
@@ -109,11 +109,12 @@ def help():
 	print ("rokuterm --ip=<ip address>")
 	print ("e.g.: rokuterm 192.168.0.5")
 	print
-	print ("Using the autoscan option is currently very slow and only detects one roku. Additional devices will be ignored.")
-	print ("Only the IP range 192.168.0.xxx is currently scanned. A more versatile scan is currently being developed.")
+	print ("Using the autoscan option is currently very slow and only detects one roku.")
+	print ("Additional devices will be ignored.")
+	print ("Only the IP range 192.168.0.xxx is currently scanned. A more versatile scan")
+	print ("is currently being developed.")
 	print ("RokuTerm is loosely based upon uRoku for Ubuntu Touch")
 	print ("https://github.com/ShaneQful/uRoku")
-	print
 	donate()
 	
 def send(url):
@@ -145,9 +146,13 @@ def find():
 			ip = ""
 
 def donate():
+	os.system('cls' if os.name == 'nt' else 'clear')
 	print ("If you have found RokuTerm useful please consider making a small donation to fund future development.")
 	print ("Paypal:- gareth.france@gmail.com")
 	print ("PPPay.com:- gareth.france@cliftonts.co.uk")
+	print 
+	print ("A massive thank you to kyrofa, elopio and Mark Shuttleworth for their help")
+	print ("in making the snap version possible.")
 	quit()
 
 
@@ -190,6 +195,7 @@ if ip == "":
 	quit()
 
 key = ""
+os.system('cls' if os.name == 'nt' else 'clear')
 print (" ******** ********** *********** **********")
 print (" *  7   * *   8    * *    9    * *   /    *")
 print (" * Back * *   UP   * *  Home   * *  Play  *")
@@ -279,7 +285,6 @@ while True:
 		send(cmd)
 		key = ""
 	elif key == '-':
-		print "Quit"
 		donate()
 	elif key == 's' or key == 'S':
 		keyboard(ip)
