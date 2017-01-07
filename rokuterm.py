@@ -22,78 +22,97 @@ else:
 
 
 ip = ""
-version = "0.1.5"
+version = "0.1.6"
 
-try:
-	#KB hit routines START
-	# save the terminal settings
-	fd = sys.stdin.fileno()
-	new_term = termios.tcgetattr(fd)
-	old_term = termios.tcgetattr(fd)
+#KB hit routines START
+# save the terminal settings
+fd = sys.stdin.fileno()
+new_term = termios.tcgetattr(fd)
+old_term = termios.tcgetattr(fd)
 
-	# new terminal setting unbuffered
-	new_term[3] = (new_term[3] & ~termios.ICANON & ~termios.ECHO)
+# new terminal setting unbuffered
+new_term[3] = (new_term[3] & ~termios.ICANON & ~termios.ECHO)
 
-	# switch to normal terminal
-	def set_normal_term():
-	    termios.tcsetattr(fd, termios.TCSAFLUSH, old_term)
+# switch to normal terminal
+def set_normal_term():
+    termios.tcsetattr(fd, termios.TCSAFLUSH, old_term)
 
-	# switch to unbuffered terminal
-	def set_curses_term():
-	    termios.tcsetattr(fd, termios.TCSAFLUSH, new_term)
+# switch to unbuffered terminal
+def set_curses_term():
+    termios.tcsetattr(fd, termios.TCSAFLUSH, new_term)
 
-	def putch(ch):
-	    sys.stdout.write(ch)
+def putch(ch):
+    sys.stdout.write(ch)
 
-	def getch():
-	    return sys.stdin.read(1)
+def getch():
+    return sys.stdin.read(1)
 
-	def getche():
-	    ch = getch()
-	    putch(ch)
-	    return ch
+def getche():
+    ch = getch()
+    putch(ch)
+    return ch
 
-	def kbhit():
-	    dr,dw,de = select([sys.stdin], [], [], 0)
-	    #return dr <> []
-	    return dr != []
+def kbhit():
+    dr,dw,de = select([sys.stdin], [], [], 0)
+    #return dr <> []
+    return dr != []
 	
-	class _Getch:
-	    """Gets a single character from standard input.  Does not echo to the
-	screen."""
-	    def __init__(self):
-	        try:
-	            self.impl = _GetchWindows()
-	        except ImportError:
-	            self.impl = _GetchUnix()	
+class _Getch:
+    """Gets a single character from standard input.  Does not echo to the
+    screen."""
+    def __init__(self):
+        try:
+            self.impl = _GetchWindows()
+        except ImportError:
+            self.impl = _GetchUnix()	
 
-	    def __call__(self): return self.impl()
+    def __call__(self): return self.impl()
 
-	class _GetchUnix:
-	    def __init__(self):
-	        import tty, sys
+class _GetchUnix:
+    def __init__(self):
+        import tty, sys
 
-	    def __call__(self):
-	        import sys, tty, termios
-	        fd = sys.stdin.fileno()
-	        old_settings = termios.tcgetattr(fd)
-	        try:
-	            tty.setraw(sys.stdin.fileno())	
-	            ch = sys.stdin.read(1)
-	        finally:
-	            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-	        return ch
+    def __call__(self):
+        import sys, tty, termios
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(sys.stdin.fileno())	
+            ch = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return ch
+class _GetchWindows:
 
-	class _GetchWindows:
-	    def __init__(self):
-	        import msvcrt
-	
-	    def __call__(self):
-	        import msvcrt
-	        return msvcrt.getch()
-	#KB Hit routines END
-except:
-	pass
+    def __init__(self):
+        import msvcrt
+
+    def __call__(self):
+        import msvcrt
+        return msvcrt.getch()
+#KB Hit routines END
+
+def menu():
+	os.system('cls' if os.name == 'nt' else 'clear')
+	print (" ******** ********** *********** **********")
+	print (" *  7   * *   8    * *    9    * *   /    *")
+	print (" * Back * *   UP   * *  Home   * *  Play  *")
+	print (" ******** ********** *********** **********")
+	print ("")
+	print (" ******** ********** *********** **********")
+	print (" *  4   * *   5    * *    6    * *   *    *")
+	print (" * Left * * Select * *  Right  * * Reload *")
+	print (" ******** ********** *********** **********")
+	print ("")
+	print (" ******** ********** *********** **********")
+	print (" *  1   * *   2    * *    3    * *   -    *")
+	print (" * Rev  * *  Down  * * Forward * *  Quit  *")
+	print (" ******** ********** *********** **********")
+	print ("")
+	print " ******** **********"
+	print " *  0   * *   S    *"
+	print " * Info * * Search *"
+	print " ******** **********"
 
 def help():
 	print ("************************************************************")
@@ -155,7 +174,7 @@ def donate():
 	print ("fund future development.")
 	print ("Paypal:- gareth.france@gmail.com")
 	print ("PPPay.com:- gareth.france@cliftonts.co.uk")
-	print ()
+	print ("")
 	print ("A massive thank you to kyrofa, elopio and Mark Shuttleworth for their help")
 	print ("in making the snap version possible.")
 	quit()
@@ -166,9 +185,17 @@ def keyboard(ip):
 	#urllib.quote('/test', safe='')
 
 	#networkCall("POST", "http://" + ip + ":8060/keypress/Backspace");
-	keyin = raw_input("Search: ")
+	#if sys.version_info < (3,0):
+	set_normal_term()
+	if sys.version_info >= (3,0):
+		keyin = input("Search: ")
+	else:
+		keyin = raw_input("Search: ")
 	for i in keyin:
-		url = "http://" + ip + ":8060/keypress/Lit_" + urllib.quote(i, safe='');
+		if sys.version_info >= (3,0):
+			url = "http://" + ip + ":8060/keypress/Lit_" + urllib.parse.quote(i, safe='');
+		else:
+			url = "http://" + ip + ":8060/keypress/Lit_" + urllib.quote(i, safe='');
 		payload = {'': ''}
 		try:
 			# POST with form-encoded data
@@ -180,11 +207,14 @@ def keyboard(ip):
 		except:
 			print ("ROKU NOT FOUND!")
 		time.sleep(0.2)
+	#if sys.version_info < (3,0):
+	set_curses_term()
+	menu()
 
 #Main
 #neighbourhood.main()
 #quit()
-if sys.version_info < (3,0):
+if sys.version_info > (3,0):
 	atexit.register(set_normal_term)
 	set_curses_term()
 
@@ -202,26 +232,7 @@ if ip == "":
 	quit()
 
 key = ""
-os.system('cls' if os.name == 'nt' else 'clear')
-print (" ******** ********** *********** **********")
-print (" *  7   * *   8    * *    9    * *   /    *")
-print (" * Back * *   UP   * *  Home   * *  Play  *")
-print (" ******** ********** *********** **********")
-print ("")
-print (" ******** ********** *********** **********")
-print (" *  4   * *   5    * *    6    * *   *    *")
-print (" * Left * * Select * *  Right  * * Reload *")
-print (" ******** ********** *********** **********")
-print ("")
-print (" ******** ********** *********** **********")
-print (" *  1   * *   2    * *    3    * *   -    *")
-print (" * Rev  * *  Down  * * Forward * *  Quit  *")
-print (" ******** ********** *********** **********")
-print ("")
-print (" ********")
-print (" *  0   *")
-print (" * Info *")
-print (" ********")
+menu()
 
 while True:
         #"InstantReplay": "InstantReplay",
@@ -240,33 +251,9 @@ while True:
 	#	key = input("Choose:")
 	#else:
 	#	key = raw_input("Choose:")
-	if sys.version_info < (3,0):
-		if kbhit():
-			key = getch()
-	else:
-		os.system('cls' if os.name == 'nt' else 'clear')
-		print (" ******** ********** *********** **********")
-		print (" *  7   * *   8    * *    9    * *   /    *")
-		print (" * Back * *   UP   * *  Home   * *  Play  *")
-		print (" ******** ********** *********** **********")
-		print ("")
-		print (" ******** ********** *********** **********")
-		print (" *  4   * *   5    * *    6    * *   *    *")
-		print (" * Left * * Select * *  Right  * * Reload *")
-		print (" ******** ********** *********** **********")
-		print ("")
-		print (" ******** ********** *********** **********")
-		print (" *  1   * *   2    * *    3    * *   -    *")
-		print (" * Rev  * *  Down  * * Forward * *  Quit  *")
-		print (" ******** ********** *********** **********")
-		print ("")
-		print (" ********")
-		print (" *  0   *")
-		print (" * Info *")
-		print (" ********")
-		print
-		key = input("Choose:")
-
+	if kbhit():
+		key = getch()
+	
 	if key == '9':
 		cmd = "http://" + ip + ":8060/keypress/Home"
 		send(cmd)
@@ -320,4 +307,5 @@ while True:
 		donate()
 	elif key == 's' or key == 'S':
 		keyboard(ip)
+		key = ""
 
