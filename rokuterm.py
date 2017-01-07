@@ -22,7 +22,7 @@ else:
 
 
 ip = ""
-version = "0.1.6"
+version = "0.1.7"
 
 #KB hit routines START
 # save the terminal settings
@@ -109,10 +109,10 @@ def menu():
 	print (" * Rev  * *  Down  * * Forward * *  Quit  *")
 	print (" ******** ********** *********** **********")
 	print ("")
-	print " ******** **********"
-	print " *  0   * *   S    *"
-	print " * Info * * Search *"
-	print " ******** **********"
+	print (" ******** **********")
+	print (" *  0   * *   S    *")
+	print (" * Info * * Search *")
+	print (" ******** **********")
 
 def help():
 	print ("************************************************************")
@@ -214,9 +214,8 @@ def keyboard(ip):
 #Main
 #neighbourhood.main()
 #quit()
-if sys.version_info > (3,0):
-	atexit.register(set_normal_term)
-	set_curses_term()
+atexit.register(set_normal_term)
+set_curses_term()
 
 if len(sys.argv) > 1:
 	if "--h" in sys.argv or "--help" in sys.argv:
