@@ -22,74 +22,78 @@ else:
 
 
 ip = ""
-version = "0.1.4"
+version = "0.1.5"
 
-#KB hit routines START
-# save the terminal settings
-fd = sys.stdin.fileno()
-new_term = termios.tcgetattr(fd)
-old_term = termios.tcgetattr(fd)
+try:
+	#KB hit routines START
+	# save the terminal settings
+	fd = sys.stdin.fileno()
+	new_term = termios.tcgetattr(fd)
+	old_term = termios.tcgetattr(fd)
 
-# new terminal setting unbuffered
-new_term[3] = (new_term[3] & ~termios.ICANON & ~termios.ECHO)
+	# new terminal setting unbuffered
+	new_term[3] = (new_term[3] & ~termios.ICANON & ~termios.ECHO)
 
-# switch to normal terminal
-def set_normal_term():
-    termios.tcsetattr(fd, termios.TCSAFLUSH, old_term)
+	# switch to normal terminal
+	def set_normal_term():
+	    termios.tcsetattr(fd, termios.TCSAFLUSH, old_term)
 
-# switch to unbuffered terminal
-def set_curses_term():
-    termios.tcsetattr(fd, termios.TCSAFLUSH, new_term)
+	# switch to unbuffered terminal
+	def set_curses_term():
+	    termios.tcsetattr(fd, termios.TCSAFLUSH, new_term)
 
-def putch(ch):
-    sys.stdout.write(ch)
+	def putch(ch):
+	    sys.stdout.write(ch)
 
-def getch():
-    return sys.stdin.read(1)
+	def getch():
+	    return sys.stdin.read(1)
 
-def getche():
-    ch = getch()
-    putch(ch)
-    return ch
+	def getche():
+	    ch = getch()
+	    putch(ch)
+	    return ch
 
-def kbhit():
-    dr,dw,de = select([sys.stdin], [], [], 0)
-    return dr <> []
+	def kbhit():
+	    dr,dw,de = select([sys.stdin], [], [], 0)
+	    #return dr <> []
+	    return dr != []
+	
+	class _Getch:
+	    """Gets a single character from standard input.  Does not echo to the
+	screen."""
+	    def __init__(self):
+	        try:
+	            self.impl = _GetchWindows()
+	        except ImportError:
+	            self.impl = _GetchUnix()	
 
-class _Getch:
-    """Gets a single character from standard input.  Does not echo to the
-screen."""
-    def __init__(self):
-        try:
-            self.impl = _GetchWindows()
-        except ImportError:
-            self.impl = _GetchUnix()
+	    def __call__(self): return self.impl()
 
-    def __call__(self): return self.impl()
+	class _GetchUnix:
+	    def __init__(self):
+	        import tty, sys
 
-class _GetchUnix:
-    def __init__(self):
-        import tty, sys
+	    def __call__(self):
+	        import sys, tty, termios
+	        fd = sys.stdin.fileno()
+	        old_settings = termios.tcgetattr(fd)
+	        try:
+	            tty.setraw(sys.stdin.fileno())	
+	            ch = sys.stdin.read(1)
+	        finally:
+	            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+	        return ch
 
-    def __call__(self):
-        import sys, tty, termios
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return ch
-
-class _GetchWindows:
-    def __init__(self):
-        import msvcrt
-
-    def __call__(self):
-        import msvcrt
-        return msvcrt.getch()
-#KB Hit routines END
+	class _GetchWindows:
+	    def __init__(self):
+	        import msvcrt
+	
+	    def __call__(self):
+	        import msvcrt
+	        return msvcrt.getch()
+	#KB Hit routines END
+except:
+	pass
 
 def help():
 	print ("************************************************************")
@@ -100,21 +104,22 @@ def help():
 	print ("*                           " + version + "                          *")
 	print ("*                                                          *")
 	print ("************************************************************")
-	print
+	print ()
 	print ("Usage:")
 	print ("Load rokuterm, autoscanning for devices.")
 	print ("rokuterm")
-	print
+	print ()
 	print ("Load rokuterm using a specific IP address")
 	print ("rokuterm --ip=<ip address>")
 	print ("e.g.: rokuterm 192.168.0.5")
-	print
+	print ()
 	print ("Using the autoscan option is currently very slow and only detects one roku.")
 	print ("Additional devices will be ignored.")
 	print ("Only the IP range 192.168.0.xxx is currently scanned. A more versatile scan")
 	print ("is currently being developed.")
 	print ("RokuTerm is loosely based upon uRoku for Ubuntu Touch")
 	print ("https://github.com/ShaneQful/uRoku")
+	print ()
 	donate()
 	
 def send(url):
@@ -146,11 +151,11 @@ def find():
 			ip = ""
 
 def donate():
-	os.system('cls' if os.name == 'nt' else 'clear')
-	print ("If you have found RokuTerm useful please consider making a small donation to fund future development.")
+	print ("If you have found RokuTerm useful please consider making a small donation to")
+	print ("fund future development.")
 	print ("Paypal:- gareth.france@gmail.com")
 	print ("PPPay.com:- gareth.france@cliftonts.co.uk")
-	print 
+	print ()
 	print ("A massive thank you to kyrofa, elopio and Mark Shuttleworth for their help")
 	print ("in making the snap version possible.")
 	quit()
@@ -179,8 +184,10 @@ def keyboard(ip):
 #Main
 #neighbourhood.main()
 #quit()
-atexit.register(set_normal_term)
-set_curses_term()
+if sys.version_info < (3,0):
+	atexit.register(set_normal_term)
+	set_curses_term()
+
 if len(sys.argv) > 1:
 	if "--h" in sys.argv or "--help" in sys.argv:
 		help()
@@ -211,10 +218,10 @@ print (" *  1   * *   2    * *    3    * *   -    *")
 print (" * Rev  * *  Down  * * Forward * *  Quit  *")
 print (" ******** ********** *********** **********")
 print ("")
-print (" ******** **********")
-print (" *  0   * *   S    *")
-print (" * Info * * Search *")
-print (" ******** **********")
+print (" ********")
+print (" *  0   *")
+print (" * Info *")
+print (" ********")
 
 while True:
         #"InstantReplay": "InstantReplay",
@@ -233,9 +240,33 @@ while True:
 	#	key = input("Choose:")
 	#else:
 	#	key = raw_input("Choose:")
-	if kbhit():
-		key = getch()
-	
+	if sys.version_info < (3,0):
+		if kbhit():
+			key = getch()
+	else:
+		os.system('cls' if os.name == 'nt' else 'clear')
+		print (" ******** ********** *********** **********")
+		print (" *  7   * *   8    * *    9    * *   /    *")
+		print (" * Back * *   UP   * *  Home   * *  Play  *")
+		print (" ******** ********** *********** **********")
+		print ("")
+		print (" ******** ********** *********** **********")
+		print (" *  4   * *   5    * *    6    * *   *    *")
+		print (" * Left * * Select * *  Right  * * Reload *")
+		print (" ******** ********** *********** **********")
+		print ("")
+		print (" ******** ********** *********** **********")
+		print (" *  1   * *   2    * *    3    * *   -    *")
+		print (" * Rev  * *  Down  * * Forward * *  Quit  *")
+		print (" ******** ********** *********** **********")
+		print ("")
+		print (" ********")
+		print (" *  0   *")
+		print (" * Info *")
+		print (" ********")
+		print
+		key = input("Choose:")
+
 	if key == '9':
 		cmd = "http://" + ip + ":8060/keypress/Home"
 		send(cmd)
@@ -285,6 +316,7 @@ while True:
 		send(cmd)
 		key = ""
 	elif key == '-':
+		os.system('cls' if os.name == 'nt' else 'clear')
 		donate()
 	elif key == 's' or key == 'S':
 		keyboard(ip)
