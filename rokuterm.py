@@ -22,7 +22,7 @@ else:
 
 
 ip = ""
-version = "0.1.7"
+version = "0.2.0"
 
 #KB hit routines START
 # save the terminal settings
@@ -94,25 +94,26 @@ class _GetchWindows:
 
 def menu():
 	os.system('cls' if os.name == 'nt' else 'clear')
-	print (" ******** ********** *********** **********")
-	print (" *  7   * *   8    * *    9    * *   /    *")
-	print (" * Back * *   UP   * *  Home   * *  Play  *")
-	print (" ******** ********** *********** **********")
-	print ("")
-	print (" ******** ********** *********** **********")
-	print (" *  4   * *   5    * *    6    * *   *    *")
-	print (" * Left * * Select * *  Right  * * Reload *")
-	print (" ******** ********** *********** **********")
-	print ("")
-	print (" ******** ********** *********** **********")
-	print (" *  1   * *   2    * *    3    * *   -    *")
-	print (" * Rev  * *  Down  * * Forward * *  Quit  *")
-	print (" ******** ********** *********** **********")
-	print ("")
-	print (" ******** **********")
-	print (" *  0   * *   S    *")
-	print (" * Info * * Search *")
-	print (" ******** **********")
+	print (u'\u2554' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2564' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2564' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2557')
+	print (u'\u2551' + "   7   " + u'\u2502' + "   8   " + u'\u2502' + "   9   " + u'\u2551')
+	print (u'\u2551' + " Back  " + u'\u2502' + "  Up   " + u'\u2502' + " Home  " + u'\u2551')
+	print (u'\u255F' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u253C' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u253C' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2562')
+	
+	print (u'\u2551' + "   4   " + u'\u2502' + "   5   " + u'\u2502' + "   6   " + u'\u2551')
+	print (u'\u2551' + " Left  " + u'\u2502' + "Select " + u'\u2502' + " Right " + u'\u2551')
+	print (u'\u255F' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u253C' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u253C' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2562')
+	
+	print (u'\u2551' + "   1   " + u'\u2502' + "   2   " + u'\u2502' + "   3   " + u'\u2551')
+	print (u'\u2551' + "  Rev  " + u'\u2502' + " Down  " + u'\u2502' + "Forward" + u'\u2551')
+	print (u'\u255F' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u253C' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u253C' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2562')
+	
+	print (u'\u2551' + "   /   " + u'\u2502' + "   *   " + u'\u2502' + "   -   " + u'\u2551')
+	print (u'\u2551' + " Play  " + u'\u2502' + "Reload " + u'\u2502' + " Quit  " + u'\u2551')
+	print (u'\u255F' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u253C' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u253C' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2500' + u'\u2562')
+	
+	print (u'\u2551' + "   0   " + u'\u2502' + "   S   " + u'\u2502' + "       " + u'\u2551')
+	print (u'\u2551' + " Info  " + u'\u2502' + "Search " + u'\u2502' + "       " + u'\u2551')
+	print (u'\u255A' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2567' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2567' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u255D')
 
 def help():
 	print ("************************************************************")
@@ -123,22 +124,22 @@ def help():
 	print ("*                           " + version + "                          *")
 	print ("*                                                          *")
 	print ("************************************************************")
-	print ()
+	print ("")
 	print ("Usage:")
 	print ("Load rokuterm, autoscanning for devices.")
 	print ("rokuterm")
-	print ()
+	print ("")
 	print ("Load rokuterm using a specific IP address")
 	print ("rokuterm --ip=<ip address>")
 	print ("e.g.: rokuterm 192.168.0.5")
-	print ()
+	print ("")
 	print ("Using the autoscan option is currently very slow and only detects one roku.")
 	print ("Additional devices will be ignored.")
 	print ("Only the IP range 192.168.0.xxx is currently scanned. A more versatile scan")
 	print ("is currently being developed.")
 	print ("RokuTerm is loosely based upon uRoku for Ubuntu Touch")
 	print ("https://github.com/ShaneQful/uRoku")
-	print ()
+	print ("")
 	donate()
 	
 def send(url):
@@ -177,6 +178,7 @@ def donate():
 	print ("")
 	print ("A massive thank you to kyrofa, elopio and Mark Shuttleworth for their help")
 	print ("in making the snap version possible.")
+	os.system('setterm -cursor on')
 	quit()
 
 
@@ -214,6 +216,7 @@ def keyboard(ip):
 #Main
 #neighbourhood.main()
 #quit()
+os.system('setterm -cursor off')
 atexit.register(set_normal_term)
 set_curses_term()
 
@@ -228,6 +231,7 @@ else:
 
 if ip == "":
 	print ("ROKU NOT FOUND!")
+	os.system('setterm -cursor on')
 	quit()
 
 key = ""
