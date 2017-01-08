@@ -22,7 +22,7 @@ else:
 
 
 ip = ""
-version = "0.2.1"
+version = "0.2.2"
 
 #KB hit routines START
 # save the terminal settings
