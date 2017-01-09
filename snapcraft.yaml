@@ -19,4 +19,10 @@ parts:
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
       cp rokuterm.py $SNAPCRAFT_PART_INSTALL/bin/
       chmod a+x $SNAPCRAFT_PART_INSTALL/bin/rokuterm.py
+  move-src:
+    plugin: dump
+    source: .
+    organize:
+      rokuterm.py: bin/rokuterm
+      wrapper: bin/wrapper
 
