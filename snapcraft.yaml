@@ -15,11 +15,6 @@ parts:
     python-version: python2
     source: https://github.com/cliftonts/RokuTerm.git
     python-packages: [requests]
-    stage-packages: setterm
-    filesets:
-       setterm: usr/bin/setterm
-    stage: $setterm
-    snap: Ssetterm
     install: |
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
       cp rokuterm.py $SNAPCRAFT_PART_INSTALL/bin/
