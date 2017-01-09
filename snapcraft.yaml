@@ -10,7 +10,7 @@ apps:
     plugs: [network-bind]
 
 parts:
-move-src:
+  move-src:
     plugin: dump
     source: .
     organize:
@@ -21,5 +21,9 @@ move-src:
     python-version: python2
     source: https://github.com/cliftonts/RokuTerm.git
     python-packages: [requests]
-
+    install: |
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      cp rokuterm.py $SNAPCRAFT_PART_INSTALL/bin/
+      chmod a+x $SNAPCRAFT_PART_INSTALL/bin/rokuterm.py
+  
 
