@@ -6,7 +6,7 @@ confinement: strict
 
 apps:
   rokuterm:
-    command: env PYTHONIOENCODING=UTF-8
+    command: env PYTHONIOENCODING=UTF-8 rokuterm.py
     plugs: [network-bind]
 
 parts:
