@@ -6,16 +6,10 @@ confinement: strict
 
 apps:
   rokuterm:
-    command: bin/wrapper
+    command: bin/rokuterm
     plugs: [network-bind]
 
 parts:
-  move-src:
-    plugin: dump
-    source: .
-    organize:
-      rokuterm.py: bin/rokuterm
-      wrapper: bin/wrapper
   cliftonts:
     plugin: python
     python-version: python2
