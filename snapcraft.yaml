@@ -6,7 +6,7 @@ confinement: strict
 
 apps:
   rokuterm:
-    command: rokuterm.py
+    command: bin/wrapper
     plugs: [network-bind]
 
 parts:
