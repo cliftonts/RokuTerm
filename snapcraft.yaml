@@ -10,19 +10,16 @@ apps:
     plugs: [network-bind]
 
 parts:
-  cliftonts:
-    plugin: python
-    python-version: python2
-    source: https://github.com/cliftonts/RokuTerm.git
-    python-packages: [requests]
-    install: |
-      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
-      cp rokuterm.py $SNAPCRAFT_PART_INSTALL/bin/
-      chmod a+x $SNAPCRAFT_PART_INSTALL/bin/rokuterm.py
-  move-src:
+move-src:
     plugin: dump
     source: .
     organize:
       rokuterm.py: bin/rokuterm
       wrapper: bin/wrapper
+  cliftonts:
+    plugin: python
+    python-version: python2
+    source: https://github.com/cliftonts/RokuTerm.git
+    python-packages: [requests]
+
 
