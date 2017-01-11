@@ -1,5 +1,5 @@
 name: rokuterm
-version: 0.2.2
+version: 0.2.3
 summary: A Roku remote for terminal
 description: Control your Roku or Now TV box in your terminal
 confinement: strict

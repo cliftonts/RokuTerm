@@ -19,11 +19,10 @@ if sys.version_info >= (3,0):
 	import urllib.request
 else:
 	import urllib2
-#import neighbourhood
 
 
 ip = ""
-version = "0.2.2"
+version = "0.2.3"
 
 #KB hit routines START
 # save the terminal settings
@@ -94,7 +93,6 @@ class _GetchWindows:
 #KB Hit routines END
 
 def menu():
-	#try:
 	os.system('cls' if os.name == 'nt' else 'clear')
 	print (u'\u2554' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2564' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2564' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2557')
 	print (u'\u2551' + "   7   " + u'\u2502' + "   8   " + u'\u2502' + "   9   " + u'\u2551')
@@ -116,27 +114,6 @@ def menu():
 	print (u'\u2551' + "   0   " + u'\u2502' + "   S   " + u'\u2502' + "       " + u'\u2551')
 	print (u'\u2551' + " Info  " + u'\u2502' + "Search " + u'\u2502' + "       " + u'\u2551')
 	print (u'\u255A' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2567' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2567' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u2550' + u'\u255D')
-	#except:
-	#	os.system('cls' if os.name == 'nt' else 'clear')
-	#	print (" ******** ********** *********** **********")
-	#	print (" *  7   * *   8    * *    9    * *   /    *")
-	#	print (" * Back * *   UP   * *  Home   * *  Play  *")
-	#	print (" ******** ********** *********** **********")
-	#	print ("")
-	#	print (" ******** ********** *********** **********")
-	#	print (" *  4   * *   5    * *    6    * *   *    *")
-	#	print (" * Left * * Select * *  Right  * * Reload *")
-	#	print (" ******** ********** *********** **********")
-	#	print ("")
-	#	print (" ******** ********** *********** **********")
-	#	print (" *  1   * *   2    * *    3    * *   -    *")
-	#	print (" * Rev  * *  Down  * * Forward * *  Quit  *")
-	#	print (" ******** ********** *********** **********")
-	#	print ("")
-	#	print (" ******** **********")
-	#	print (" *  0   * *   S    *")
-	#	print (" * Info * * Search *")
-	#	print (" ******** **********")
 
 def help():
 	print ("************************************************************")
@@ -177,21 +154,22 @@ def send(url):
 	except:
 		print ("ROKU NOT FOUND!")
 
+
 def find():
 	global ip
 	for i in range(1,256):
 		try:
-			url = 'http://192.168.0.' + str(i) + ':8060'
-			print ("Attempting - 192.168.0." + str(i))	
-			r = urllib2.urlopen(url)
+			url = 'http://' + ip + '.' + str(i) + ':8060'
+			print ("Attempting - " + ip + "." + str(i))	
+			r = urllib2.urlopen(url, timeout=0.2)
 			html=r.read()
 			if "Roku" in html:
 				print ("Roku found!")
-				print ("192.168.0." + str(i))
-				ip = "192.168.0." + str(i)
+				print (ip + "." + str(i))
+				ip = ip + "." + str(i)
 				break
 		except:
-			ip = ""
+			pass
 
 def donate():
 	print ("If you have found RokuTerm useful please consider making a small donation to")
@@ -247,12 +225,26 @@ if len(sys.argv) > 1:
 	if "--h" in sys.argv or "--help" in sys.argv:
 		help()
 	else:
-		ip = sys.argv[1]
+		ipsplit = sys.argv[1].split(".")
+		if len(ipsplit) < 3:
+			print ("Incomplete IP address, enter a fill IP address or three segments to search")
+			print ("e.g. 192.168.0")
+			quit()
+		elif len(ipsplit) == 3:
+			ip = sys.argv[1]
+			find()
+		elif len(ipsplit) == 4:
+			ip = sys.argv[1]
+		elif len(ipsplit) > 4:
+			print ("Not a valid IP address")
+			quit()
 
 else:
+	ip = "192.168.0"
 	find()
 
-if ip == "":
+ipsplit = ip.split(".")
+if len(ipsplit) < 4:
 	print ("ROKU NOT FOUND!")
 	os.system('setterm -cursor on')
 	quit()
