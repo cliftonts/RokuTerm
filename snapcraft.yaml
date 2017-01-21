@@ -1,5 +1,5 @@
 name: rokuterm
-version: 0.2.3
+version: 0.2.4
 summary: A Roku remote for terminal
 description: Control your Roku or Now TV box in your terminal
 confinement: strict
@@ -13,11 +13,14 @@ parts:
   cliftonts:
     plugin: python
     python-version: python2
-    source: https://github.com/cliftonts/RokuTerm.git
-    python-packages: [requests]
-    install: |
-      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
-      cp rokuterm.py $SNAPCRAFT_PART_INSTALL/bin/
-      chmod a+x $SNAPCRAFT_PART_INSTALL/bin/rokuterm.py
+    source: .
+    stage-packages:
+      - python-requests
+      - util-linux
+    #python-packages: [requests]
+    #install: |
+    #  mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+    #  cp rokuterm.py $SNAPCRAFT_PART_INSTALL/bin/
+    #  chmod a+x $SNAPCRAFT_PART_INSTALL/bin/rokuterm.py
   
 
