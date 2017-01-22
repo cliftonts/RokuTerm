@@ -3,10 +3,11 @@ version: 0.2.4
 summary: A Roku remote for terminal
 description: Control your Roku or Now TV box in your terminal
 confinement: strict
+grade: stable
 
 apps:
   rokuterm:
-    command: env PYTHONIOENCODING=UTF-8 rokuterm.py
+    command: env PYTHONIOENCODING=UTF-8 bin/wrapper
     plugs: [network-bind]
 
 parts:
@@ -17,6 +18,9 @@ parts:
     stage-packages:
       - python-requests
       - util-linux
+    organize:
+      ../build/wrapper: bin/
+      ../build/rokuterm: bin/
     #python-packages: [requests]
     #install: |
     #  mkdir -p $SNAPCRAFT_PART_INSTALL/bin
